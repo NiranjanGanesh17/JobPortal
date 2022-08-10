@@ -3,7 +3,8 @@ import cors from "cors";
 import mongoose from 'mongoose'
 import dotenv from 'dotenv';
 import auth from './routes/auth'
-// import cors from "cors";
+import csrf from 'csurf';
+import cookieParser from 'cookie-parser'
 //dotenv initialization
 dotenv.config()
 
@@ -11,8 +12,16 @@ dotenv.config()
 // starting the server 
 const app=express()
 
+
+app.use(cookieParser())
+
+//csrf protection
+var csrfmiddleware = csrf({ cookie: true })
+app.use(csrfmiddleware)
+
+
 //cors
-// app.use(cors());
+app.use(cors());
 
 
 //body parser
@@ -23,6 +32,7 @@ app.use(express.json({ extended: true, limit: "50mb" }));
 
 //cors
 app.use(cors());
+
 
 
 //connecting DB
@@ -42,9 +52,16 @@ app.listen(port,()=>{
 
 
 //Routes
+app.all("*",(req,res,next)=>{
+    res.cookie("XSRF-TOKEN",req.csrfToken())
+    next()
+})   
+
+
 app.use('/api',auth)
+
 
 // Demo route
 app.get('/',(req,res)=>{
-    res.send('Great..!')
+    res.send({csrfToken:req.csrfToken()})
 })
