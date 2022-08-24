@@ -2,3 +2,5 @@ node_modules
 firebaseConfig.json
 package-lock.json
 .env
+dataEditor.js
+jobs.json

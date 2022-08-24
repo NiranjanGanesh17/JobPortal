@@ -3,15 +3,16 @@ import cors from "cors";
 import mongoose from 'mongoose'
 import dotenv from 'dotenv';
 import auth from './routes/auth'
+import jobs from './routes/jobs'
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser'
 //dotenv initialization
 dotenv.config()
 
 
+
 // starting the server 
 const app=express()
-
 
 app.use(cookieParser())
 
@@ -51,7 +52,7 @@ app.listen(port,()=>{
 })
 
 
-//Routes
+// Routes
 app.all("*",(req,res,next)=>{
     res.cookie("XSRF-TOKEN",req.csrfToken())
     next()
@@ -59,6 +60,7 @@ app.all("*",(req,res,next)=>{
 
 
 app.use('/api',auth)
+app.use('/jobs',jobs)
 
 
 // Demo route
