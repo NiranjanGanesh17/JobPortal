@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const jobSchema = new Schema({
+export const jobSchema = new Schema({
     job_role: {
         type: String,
         // required: true,

@@ -4,40 +4,40 @@ import { JOB_FILTER } from '../constants'
 export const searchJobs = async (req, res) => {
 
 
-// to do : have to implement autocomplete and search seperately from this
+    // to do : have to implement autocomplete and search seperately from this
 
 
     try {
-        const autocomplete = await Job.aggregate([
-            {
-                $search: {
-                    index: JOB_FILTER, compound: {
-                        should: [
-                            {
-                                autocomplete: { query: req.body.keyword, path: "city" }
-                            },
-                            {
-                                autocomplete: { query: req.body.keyword, path: "state" }
-                            },
-                            {
-                                autocomplete: { query: req.body.keyword, path: "job_role" }
-                            }
-                        ]
-                    }
-                }
-            },
-            { $limit: 1 },
-            { $project: { _id: 0, state: 1, city: 1,job_role:1 } }
-        ])
+        // const autocomplete = await Job.aggregate([
+        //     {
+        //         $search: {
+        //             index: JOB_FILTER, compound: {
+        //                 should: [
+        //                     {
+        //                         autocomplete: { query: req.body.city, path: "city" }
+        //                     },
+        //                     {
+        //                         autocomplete: { query: req.body.city, path: "state" }
+        //                     },
+        //                     {
+        //                         autocomplete: { query: req.body.role, path: "job_role" }
+        //                     }
+        //                 ]
+        //             }
+        //         }
+        //     },
+        //     { $limit: 1 },
+        //     { $project: { _id: 0, state: 1, city: 1,job_role:1 } }
+        // ])
         const search = await Job.aggregate([
-            { $match: { city: req.body.keyword } },
-            { $limit: 10 },
+            { $match: { city: req.body.city, "job_role": req.body.role } },
+            { $limit: 20 },
         ])
-        console.log(search, autocomplete)
-        search.length == 0 ? res.send({ success: false }) : res.send({ success: true, data: search })
+        search.length == 0 ? res.send({ success: false, message: 'No such jobs are available' }) : res.send({ success: true, total: search.length, data: search })
     }
     catch (error) {
         console.log(error)
+        res.send({ success: false, message: 'No such jobs are available' })
     }
 
 } 
