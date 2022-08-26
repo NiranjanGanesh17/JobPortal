@@ -42,7 +42,7 @@ const userSchema = new Schema({
     employment:
         [{
             company:String,
-            job_role:{type:String,default:'developer'},
+            job_role:{type:String},
             annual_salary:String,
             notice_period:String,
             total_experience:String,

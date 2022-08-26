@@ -18,12 +18,12 @@ export const signup = async (req, res) => {
                 emailVerified: false,
                 disabled: false
             }).then((value) => {
-                const{email,mobile_number,full_name,state,city,zip,experience}=req.body
+                const{email,mobile_number,full_name,state,city,zip,experience,role}=req.body
                 const data={
                     email,
                     mobile_number,
                     full_name,
-                    role:req.body.role?req.body.role:JOB_SEEKER,
+                    role,
                     state,city,zip,experience,uid:value.uid.toString(),
                     ...req.body
                 }
