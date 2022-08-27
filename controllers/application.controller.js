@@ -1,5 +1,3 @@
-import admin from "firebase-admin"
-import { JOB_SEEKER } from "../constants";
 import { Application } from '../models/application.model'
 import { Job } from '../models/job.model'
 import { User } from '../models/user.model'
@@ -55,4 +53,39 @@ export const apply = async (req, res) => {
         res.json({ success: false, error: 'Application submission failed' });
     }
 
+}
+
+export const deleteApplication = async (req, res) => {
+    try {
+        const result = await Application.findOneAndDelete({ _id: req.params.id })
+            await Job.updateOne(
+                { _id: result.job },
+                {
+                    $pull: { applications: req.params.id }
+                },
+                {
+                    upsert: true
+                }
+            )
+            .then(async (response) => {
+                await User.updateOne(
+                    { _id: result.jobseeker },
+                    {
+                        $pull: { jobs_applied: req.params.id }
+                    },
+
+                    {
+                        upsert: true
+                    }
+                )
+            }).then((resp) => {
+                res.json({ success: true, result: 'Application successfully deleted' })
+            }).catch((err) => {
+                res.json({ success: false, result: 'Application delete failed.' })
+            })
+
+
+    } catch (err) {
+        res.json({ success: false, result: 'Application delete failed' })
+    }
 }
