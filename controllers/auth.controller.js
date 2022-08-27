@@ -37,7 +37,7 @@ export const signup = async (req, res) => {
   
     }
     catch (err) {
-        res.json({ success: false, error: 'Error while creating the user' });
+        res.json({ success: false, error: 'Error while creating the user' }); 
     }
 
 }

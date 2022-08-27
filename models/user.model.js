@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import {JOB_SEEKER} from '../constants'
-import {jobSchema} from '../models/job.model'
+import { JOB_SEEKER, BASIC_PLAN } from '../constants'
+import { jobSchema } from '../models/job.model'
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -31,24 +31,43 @@ const userSchema = new Schema({
     Zip: {
         type: Number
     },
-    experience:{
-        type:String
+    plan: {
+        type: String,
+        default: BASIC_PLAN,
     },
-    jobs_applied:{
-        type:[
+    experience: {
+        type: String
+    },
+    jobs_applied: {
+        type: [
             jobSchema
         ]
     },
+
     employment:
         [{
-            company:String,
-            job_role:{type:String},
-            annual_salary:String,
-            notice_period:String,
-            total_experience:String,
-            currently_employed:Boolean
-        }]
-    
+            company: String,
+            job_role: { type: String },
+            annual_salary: String,
+            notice_period: String,
+            total_experience: String,
+            currently_employed: Boolean
+        }],
+    education: [
+        {
+            name: String,
+            course: String,
+            specialization: String,
+            institute: String,
+            course_type: String,
+            passedout_year: String,
+            marks: String
+        }
+    ],
+    skills:[
+String
+    ]
+
 });
 
 export const User = mongoose.model("users", userSchema);
