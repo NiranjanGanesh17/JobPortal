@@ -3,7 +3,7 @@ import { JOB_SEEKER, BASIC_PLAN } from '../constants'
 import { jobSchema } from '../models/job.model'
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+export const userSchema = new Schema({
     email: {
         type: String,
         required: true,
@@ -39,9 +39,7 @@ const userSchema = new Schema({
         type: String
     },
     jobs_applied: {
-        type: [
-            jobSchema
-        ]
+        type: [mongoose.Schema.Types.ObjectId],
     },
 
     employment:
@@ -64,8 +62,8 @@ const userSchema = new Schema({
             marks: String
         }
     ],
-    skills:[
-String
+    skills: [
+        String
     ]
 
 });

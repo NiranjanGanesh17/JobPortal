@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv';
 import auth from './routes/auth'
 import jobs from './routes/jobs'
+import application from './routes/application'
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser'
 //dotenv initialization
@@ -61,6 +62,7 @@ app.all("*",(req,res,next)=>{
 
 app.use('/api',auth)
 app.use('/jobs',jobs)
+app.use('/jobs',application)
 
 
 // Demo route
