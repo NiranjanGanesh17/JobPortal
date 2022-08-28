@@ -58,15 +58,15 @@ export const apply = async (req, res) => {
 export const deleteApplication = async (req, res) => {
     try {
         const result = await Application.findOneAndDelete({ _id: req.params.id })
-            await Job.updateOne(
-                { _id: result.job },
-                {
-                    $pull: { applications: req.params.id }
-                },
-                {
-                    upsert: true
-                }
-            )
+        await Job.updateOne(
+            { _id: result.job },
+            {
+                $pull: { applications: req.params.id }
+            },
+            {
+                upsert: true
+            }
+        )
             .then(async (response) => {
                 await User.updateOne(
                     { _id: result.jobseeker },
@@ -87,5 +87,16 @@ export const deleteApplication = async (req, res) => {
 
     } catch (err) {
         res.json({ success: false, result: 'Application delete failed' })
+    }
+}
+
+
+export const getStatus = async (req, res) => {
+    try {
+        const status = await Application.findOne({ _id: req.params.id })
+        res.json({ success: true, result: status.status })
+
+    } catch (err) {
+        res.json({ success: false, result: 'Application status fetch failed' })
     }
 }
