@@ -1,5 +1,4 @@
 import { Job } from '../models/job.model'
-import { JOB_FILTER } from '../constants'
 
 export const searchJobs = async (req, res) => {
 
