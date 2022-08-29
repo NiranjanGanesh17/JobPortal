@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import {userSchema} from '../models/user.model'
 const Schema = mongoose.Schema;
 
 export const jobSchema = new Schema({
@@ -49,6 +49,9 @@ export const jobSchema = new Schema({
     },
     location: {
         type: String,
+    },
+    applications:{
+        type: [mongoose.Schema.Types.ObjectId],
     }
 });
 
